@@ -38,11 +38,11 @@ class Unit:
 def attack(attacker, defender):
     if attacker.hit():
         if attacker.wound(defender.t):
-            return True
+            return defender.sv >= defender.roll() - attacker.ap
     return False
 
 
-necron_warrior = Unit(ws=3, s=5, t=4, ap=-2, sv=4, d=1, w=1)
+necron_warrior = Unit(ws=3, s=5, t=4, ap=2, sv=4, d=1, w=1)
 sm_intercessor = Unit(ws=3, s=4, t=4, ap=0, sv=3, d=1, w=2)
 
 

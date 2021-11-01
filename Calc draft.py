@@ -13,6 +13,7 @@ class Unit:
         else:
             self.s = weapon.s
         self.ws = ws
+        self.num_of_shots = weapon.num_of_shots
 
     @staticmethod
     def roll():
@@ -47,24 +48,32 @@ class Weapon:
         self.name = name
 
 
-def attack(attacker, defender):
-    if attacker.hit():
-        if attacker.wound(defender.t):
-            return defender.sv > defender.roll() - attacker.ap
-    return False
+class Shooting:
+    def __init__(self, attacker, defender):
+        self.defender = defender
+        self.attacker = attacker
 
+    def attack(self):
+        if self.attacker.hit():
+            if self.attacker.wound(self.defender.t):
+                return self.defender.sv > \
+                       self.defender.roll() - self.attacker.ap
+        return False
 
-def damage_chance(attacker, defender):
-    summ = 0
-    n = 100000
-    for i in range(0, n):
-        summ += attack(attacker, defender)
-    return summ / n
+    def damage_chance(self, n=100000):
+        summ = 0
+        for i in range(0, n):
+            summ += self.attack()
+        return summ / n
 
+    def mean_wound_qty(self, n=10):
+        p = self.damage_chance()
+        low = round(n * p - (1 - p), 2)
+        high = round(n * p + p, 2)
+        return (low + high) / 2
 
-def mean_hit_qty(n, p):
-    print(n * p - (1 - p))
-    print(n * p + p)
+    def mean_damage(self, n=10):
+        return self.mean_wound_qty(n) * self.attacker.num_of_shots
 
 
 gauss_flayer = Weapon('Gauss flayer', s=4, ap=1, d=1,
@@ -75,15 +84,25 @@ bolt_pistol = Weapon('Bolt pistol', s=4, ap=0, d=1,
                      w_type='Pistol', num_of_shots=1)
 
 sm_intercessor = Unit(bolt_pistol, ws=3, s=4, t=4, sv=3, w=2)
-
 necron_warrior_reaper = Unit(gauss_reaper, ws=3, s=4, t=4, sv=4, w=1)
 necron_warrior_flayer = Unit(gauss_flayer, ws=3, s=4, t=4, sv=4, w=1)
 
+battle = Shooting(necron_warrior_reaper, sm_intercessor)
+# print(battle.mean_wound_qty(n=20))
+print(battle.mean_damage(n=10))
+battle = Shooting(necron_warrior_flayer, sm_intercessor)
+# print(battle.mean_wound_qty(n=20))
+print(battle.mean_damage(n=20))
+"""
 chance = damage_chance(necron_warrior_reaper, sm_intercessor)
-mean_hit_qty(20, chance)
+wound = mean_wound_qty(20, chance)
+print(wound)
+print(mean_damage(wound, 1))
 chance = damage_chance(necron_warrior_flayer, sm_intercessor)
-mean_hit_qty(10, chance)
-
+wound = mean_wound_qty(20, chance)
+print(wound)
+print(mean_damage(wound, 1))
+"""
 """
 necron_immortal_gauss = Unit(ws=3, s=5, t=5, ap=2, sv=3, d=1, w=1)
 chance = damage_chance(necron_immortal_gauss, sm_intercessor)

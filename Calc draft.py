@@ -92,7 +92,7 @@ battle = Shooting(necron_warrior_reaper, sm_intercessor)
 print(battle.mean_damage(n=10))
 battle = Shooting(necron_warrior_flayer, sm_intercessor)
 # print(battle.mean_wound_qty(n=20))
-print(battle.mean_damage(n=20))
+print(battle.mean_damage(n=10))
 """
 chance = damage_chance(necron_warrior_reaper, sm_intercessor)
 wound = mean_wound_qty(20, chance)

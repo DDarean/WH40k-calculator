@@ -22,11 +22,13 @@ class Model:
         for wg in weapon_row:
             wg = wg.iloc[0]
             if wg['name'] == self.weapon_name:
-                self.weapon_type = wg['type'][:-1]
-                self.weapon_shots = int(wg['type'][-1])
+                self.weapon_type = wg['type']
+                # self.weapon_type = wg['type'][:-1]
+                # self.weapon_shots = int(wg['type'][-1])
                 self.weapon_S = int(wg['S'])
                 self.weapon_AP = int(wg['AP'])
-                self.weapon_D = int(wg['D'])
+                self.weapon_D = wg['D']
+                # self.weapon_D = int(wg['D'])
 
     @staticmethod
     def find_model_id(model_name):

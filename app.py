@@ -15,7 +15,7 @@ if attacker_txt:
     weapon = st.radio(
         "Select weapon",
         wg_list['name'].values)
-n_units = int(st.text_input('Number of units', value=1))
+n_units = int(st.text_input('Number of units', value=10))
 attacker = Model(attacker_txt, weapon)
 
 defender_txt = st.text_input('Defender', value='Intercessor')

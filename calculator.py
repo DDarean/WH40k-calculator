@@ -35,7 +35,7 @@ class Shooting:
         return roll >= required_roll
 
     def save(self):
-        return self.defender.sv < (self.roll() + self.attacker.weapon_AP)
+        return self.defender.sv - self.attacker.weapon_AP > self.roll()
 
     def find_roll_result(self, string):
         template = ' D.'

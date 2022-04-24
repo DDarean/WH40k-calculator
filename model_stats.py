@@ -5,7 +5,7 @@ import pandas as pd
 
 def connect_to_database(f):
     def wrap(*args):
-        with sqlite3.connect('test.db') as con:
+        with sqlite3.connect('test.sqlite') as con:
             cur = con.cursor()
             connected = f(cur, *args)
             return connected

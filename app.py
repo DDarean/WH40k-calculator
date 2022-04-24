@@ -4,6 +4,9 @@ import streamlit as st
 from calculator import Shooting
 from db import find_model_id, get_wargear_list
 from model_stats import Model
+import plotly.figure_factory as ff
+import plotly.express as px
+import pandas as pd
 
 attacker_txt = st.text_input('Attacker', value='Necron Warrior')
 if attacker_txt:
@@ -22,12 +25,9 @@ if defender_txt and attacker_txt:
     defender = Model(defender_txt)
     calc = Shooting(attacker, defender)
     h, w, u = calc.count_statistics_total(n_units=n_units)
-
-    fig, ax = plt.subplots(1, 3, figsize=(10, 5))
-    ax[0].bar(h.keys(), h.values())
-    ax[0].set_title('Hits')
-    ax[1].bar(w.keys(), w.values())
-    ax[1].set_title('Wounds')
-    ax[2].bar(u.keys(), u.values())
-    ax[2].set_title('Unsaved wounds')
-    st.pyplot(fig)
+    fig = px.bar(pd.DataFrame(h, index=["hits"]).T, y='hits')
+    st.plotly_chart(fig)
+    fig = px.bar(pd.DataFrame(w, index=["wounds"]).T, y='wounds')
+    st.plotly_chart(fig)
+    fig = px.bar(pd.DataFrame(u, index=["unsaved"]).T, y='unsaved')
+    st.plotly_chart(fig)

@@ -1,5 +1,6 @@
-import pandas as pd
 import sqlite3
+
+import pandas as pd
 
 
 def connect_to_database(f):

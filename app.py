@@ -1,10 +1,8 @@
-import matplotlib.pyplot as plt
 import streamlit as st
 
 from calculator import Shooting
 from db import find_model_id, get_wargear_list
 from model_stats import Model
-import plotly.figure_factory as ff
 import plotly.express as px
 import pandas as pd
 

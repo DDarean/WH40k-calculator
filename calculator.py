@@ -55,7 +55,7 @@ class Shooting:
             raise ValueError('Incorrect roll data')
         return roll_result
 
-    def count_statistics_one_round(self, n_units=10):
+    def count_statistics_one_round(self, n_units=1):
         string = self.attacker.weapon_type
         hits = []
         wounds = []
@@ -77,12 +77,12 @@ class Shooting:
 
         return hits_total, wounds_total, unsaved_total
 
-    def count_statistics_total(self, n_simulations=10000):
+    def count_statistics_total(self, n_simulations=10000, n_units=1):
         h = []
         w = []
         u = []
         for i in range(0, n_simulations):
-            hits, wounds, unsaved = self.count_statistics_one_round()
+            hits, wounds, unsaved = self.count_statistics_one_round(n_units=n_units)
             h.append(hits)
             w.append(wounds)
             u.append(unsaved)

@@ -14,7 +14,7 @@ def connect_to_database(f):
 
 
 class Model:
-    def __init__(self, name, weapon):
+    def __init__(self, name, weapon=None):
         model_id = self.find_model_id(name)
         row = self.get_model_stats(model_id)
         row = row[(row['name'] == name)]
@@ -28,14 +28,15 @@ class Model:
         self.a = row['A'][0]
         self.ld = row['Ld'][0]
         self.sv = int(row['Sv'][0][0])
-        self.weapon_name = weapon
 
-        weapon_row = self.get_wargear_list(model_id)
-        weapon_row = weapon_row[weapon_row['name'] == self.weapon_name]
-        self.weapon_type = weapon_row['type'].values[0]
-        self.weapon_S = int(weapon_row['S'])
-        self.weapon_AP = int(weapon_row['AP'])
-        self.weapon_D = weapon_row['D']
+        if weapon:
+            self.weapon_name = weapon
+            weapon_row = self.get_wargear_list(model_id)
+            weapon_row = weapon_row[weapon_row['name'] == self.weapon_name]
+            self.weapon_type = weapon_row['type'].values[0]
+            self.weapon_S = int(weapon_row['S'])
+            self.weapon_AP = int(weapon_row['AP'])
+            self.weapon_D = weapon_row['D']
 
     @staticmethod
     @connect_to_database

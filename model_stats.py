@@ -1,4 +1,15 @@
 import pandas as pd
+import sqlite3
+
+
+def connect_to_database(f):
+    def wrap(self, *args):
+        with sqlite3.connect('test.db') as con:
+            cur = con.cursor()
+            connected = f(self, cur, *args)
+            return connected
+
+    return wrap
 
 
 class Model:
@@ -30,10 +41,12 @@ class Model:
                 self.weapon_D = wg['D']
                 # self.weapon_D = int(wg['D'])
 
-    @staticmethod
-    def find_model_id(model_name):
-        datasheets = pd.read_csv('data/datasheets_models_clean.csv', sep='|')
-        return datasheets[(datasheets['name'] == model_name)]['datasheet_id'].iloc[0]
+    @connect_to_database
+    def find_model_id(self, cursor, model_name):
+        i = cursor.execute(
+            f'select datasheet_id from datasheets_models where name=:name',
+            {'name': model_name})
+        return int(i.fetchone()[0])
 
     @staticmethod
     def get_wargear_list(model_id):

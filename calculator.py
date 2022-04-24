@@ -1,7 +1,6 @@
-import re
-
-from model_stats import Model
 import random
+import re
+from collections import Counter
 
 
 class Shooting:
@@ -35,24 +34,8 @@ class Shooting:
             required_roll = 5
         return roll >= required_roll
 
-    def attack(self):
-        if self.hit():
-            if self.wound():
-                return self.defender.sv > \
-                       self.roll() + self.attacker.weapon_AP
-        return False
-
-    def damage_chance(self, n=10000):
-        summ = 0
-        for i in range(0, n):
-            summ += self.attack()
-        return summ / n
-
-    def mean_roll_result(self, string, n=10000):
-        summ = 0
-        for i in range(0, n):
-            summ += self.find_roll_result(string)
-        return summ / n
+    def save(self):
+        return self.defender.sv < (self.roll() + self.attacker.weapon_AP)
 
     def find_roll_result(self, string):
         template = ' D.'
@@ -72,16 +55,38 @@ class Shooting:
             raise ValueError('Incorrect roll data')
         return roll_result
 
-    def mean_wound_qty(self):
+    def count_statistics_one_round(self, n_units=10):
         string = self.attacker.weapon_type
-        p = self.damage_chance() * self.mean_roll_result(string=string)
-        if 'Rapid Fire' in string:
-            return 2 * p
-        return p
+        hits = []
+        wounds = []
+        unsaved = []
 
+        for _ in range(0, n_units):
+            num_of_attacks = self.find_roll_result(string)
+            for _ in range(0, num_of_attacks):
+                hits.append(self.hit())
+        hits_total = sum(hits)
 
-if __name__ == "__main__":
-    marine = Model('Intercessor', 'Bolt pistol')
-    necron = Model('Necron Warrior', 'Gauss reaper')
-    shoot = Shooting(necron, marine)
-    print(shoot.mean_wound_qty())
+        for i in range(0, hits_total):
+            wounds.append(self.wound())
+        wounds_total = sum(wounds)
+
+        for i in range(0, wounds_total):
+            unsaved.append(self.save())
+        unsaved_total = sum(unsaved)
+
+        return hits_total, wounds_total, unsaved_total
+
+    def count_statistics_total(self, n_simulations=10000):
+        h = []
+        w = []
+        u = []
+        for i in range(0, n_simulations):
+            hits, wounds, unsaved = self.count_statistics_one_round()
+            h.append(hits)
+            w.append(wounds)
+            u.append(unsaved)
+        counts_h = Counter(h)
+        counts_w = Counter(w)
+        counts_u = Counter(u)
+        return counts_h, counts_w, counts_u

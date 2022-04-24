@@ -15,19 +15,18 @@ def connect_to_database(f):
 class Model:
     def __init__(self, name, weapon):
         model_id = self.find_model_id(name)
-        datasheets_m = pd.read_csv('data/datasheets_models_clean.csv', sep='|')
-        row = datasheets_m[(datasheets_m['datasheet_id'] == model_id)]
-        row = row.iloc[0]
+        row = self.get_model_stats(model_id)
+        row = row[(row['name'] == name)]
         self.name = row['name']
-        self.m = int(row['M'][:-2])
-        self.ws = int(row['WS'][0])
-        self.bs = int(row['BS'][0])
-        self.s = row['S']
-        self.t = int(row['T'])
-        self.w = row['W']
-        self.a = row['A']
-        self.ld = row['Ld']
-        self.sv = int(row['Sv'][0])
+        self.m = int(row['M'][0][:-2])
+        self.ws = int(row['WS'][0][0])
+        self.bs = int(row['BS'][0][0])
+        self.s = row['S'][0]
+        self.t = int(row['T'][0])
+        self.w = row['W'][0]
+        self.a = row['A'][0]
+        self.ld = row['Ld'][0]
+        self.sv = int(row['Sv'][0][0])
         self.weapon_name = weapon
 
         weapon_row = self.get_wargear_list(model_id)
@@ -48,6 +47,17 @@ class Model:
 
     @staticmethod
     @connect_to_database
+    def get_model_stats(cursor, model_id):
+        model_stats = cursor.execute(
+            f'select * from datasheets_models where datasheet_id=:id',
+            {'id': model_id}
+        )
+        names = list(map(lambda x: x[0], cursor.description))
+        df_stats = pd.DataFrame(model_stats.fetchall(), columns=names)
+        return df_stats
+
+    @staticmethod
+    @connect_to_database
     def get_wargear_list(cursor, model_id):
         wargear = []
         wargear_ids = cursor.execute(
@@ -64,3 +74,4 @@ class Model:
         names = list(map(lambda x: x[0], cursor.description))
         df_wargear = pd.DataFrame(wargear, columns=names)
         return df_wargear
+

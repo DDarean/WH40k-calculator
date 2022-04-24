@@ -42,18 +42,6 @@ class Shooting:
                        self.roll() + self.attacker.weapon_AP
         return False
 
-    def damage_chance(self, n=100000):
-        summ = 0
-        for i in range(0, n):
-            summ += self.attack()
-        return summ / n
-
-    def mean_roll_result(self, string, n=100000):
-        summ = 0
-        for i in range(0, n):
-            summ += self.find_roll_result(string)
-        return summ / n
-
     def find_roll_result(self, string):
         template = ' D.'
         template2 = '[0-9]*D.'
@@ -72,20 +60,18 @@ class Shooting:
             raise ValueError('Incorrect roll data')
         return roll_result
 
-    def mean_wound_qty(self):
+    def mean_wound_qty(self, n=100000):
         string = self.attacker.weapon_type
-        p = self.damage_chance() * self.mean_roll_result(string=string)
+        p = 0
+        for i in range(0, n):
+            p += self.attack() * self.find_roll_result(string)
         if 'Rapid Fire' in string:
-            return 2 * p
-        return p
+            return 2 * p / n
+        return p / n
 
 
 if __name__ == "__main__":
     marine = Model('Intercessor', 'Bolt pistol')
     necron = Model('Necron Warrior', 'Gauss reaper')
-   # necron = Model('Skorpekh Lord', 'Enmitic annihilator')
-   # necron = Model('Illuminor Szeras', 'Eldritch Lance (shooting)')
-    #necron = Model('Lord', 'Staff of light (shooting)')
-
     shoot = Shooting(necron, marine)
     print(shoot.mean_wound_qty())

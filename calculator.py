@@ -42,13 +42,13 @@ class Shooting:
                        self.roll() + self.attacker.weapon_AP
         return False
 
-    def damage_chance(self, n=100000):
+    def damage_chance(self, n=10000):
         summ = 0
         for i in range(0, n):
             summ += self.attack()
         return summ / n
 
-    def mean_roll_result(self, string, n=100000):
+    def mean_roll_result(self, string, n=10000):
         summ = 0
         for i in range(0, n):
             summ += self.find_roll_result(string)
@@ -83,9 +83,5 @@ class Shooting:
 if __name__ == "__main__":
     marine = Model('Intercessor', 'Bolt pistol')
     necron = Model('Necron Warrior', 'Gauss reaper')
-   # necron = Model('Skorpekh Lord', 'Enmitic annihilator')
-   # necron = Model('Illuminor Szeras', 'Eldritch Lance (shooting)')
-    #necron = Model('Lord', 'Staff of light (shooting)')
-
     shoot = Shooting(necron, marine)
     print(shoot.mean_wound_qty())

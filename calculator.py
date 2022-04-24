@@ -82,7 +82,7 @@ class Shooting:
 
 if __name__ == "__main__":
     marine = Model('Intercessor', 'Bolt pistol')
-    necron = Model('Necron Warrior', 'Gauss flayer')
+    necron = Model('Necron Warrior', 'Gauss reaper')
    # necron = Model('Skorpekh Lord', 'Enmitic annihilator')
    # necron = Model('Illuminor Szeras', 'Eldritch Lance (shooting)')
     #necron = Model('Lord', 'Staff of light (shooting)')

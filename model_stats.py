@@ -1,10 +1,10 @@
 import pandas as pd
-import re
+
 
 class Model:
     def __init__(self, name, weapon):
         model_id = self.find_model_id(name)
-        datasheets_m = pd.read_csv('datasheets_models_clean.csv', sep='|')
+        datasheets_m = pd.read_csv('data/datasheets_models_clean.csv', sep='|')
         row = datasheets_m[(datasheets_m['datasheet_id'] == model_id)]
         row = row.iloc[0]
         self.name = row['name']
@@ -32,24 +32,17 @@ class Model:
 
     @staticmethod
     def find_model_id(model_name):
-        datasheets = pd.read_csv('datasheets_models_clean.csv', sep='|')
+        datasheets = pd.read_csv('data/datasheets_models_clean.csv', sep='|')
         return datasheets[(datasheets['name'] == model_name)]['datasheet_id'].iloc[0]
 
     @staticmethod
     def get_wargear_list(model_id):
-        datasheets_warg = pd.read_csv('datasheets_wargear_clean.csv',
+        datasheets_warg = pd.read_csv('data/datasheets_wargear_clean.csv',
                                       sep='|')
-        wargear_list = pd.read_csv('wargear_list_clean.csv', sep='|')
+        wargear_list = pd.read_csv('data/wargear_list_clean.csv', sep='|')
         wargear = []
         row = datasheets_warg[(datasheets_warg['datasheet_id'] == model_id)]
         wg_ids = row['wargear_id'].values
         for i in wg_ids:
             wargear.append(wargear_list[(wargear_list['wargear_id'] == i)])
         return wargear
-
-
-if __name__ == "__main__":
-    a = Model('Necron Warriors', 'Gauss flayer')
-    print(a.weapon_type)
-
-

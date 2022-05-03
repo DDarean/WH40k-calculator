@@ -5,7 +5,7 @@ from db import find_model_id, get_wargear_list
 from model_stats import Model
 import plotly.express as px
 import pandas as pd
-#st.set_page_config(layout='wide')
+st.set_page_config(layout='wide')
 with st.sidebar:
     attacker_txt = st.text_input('Attacker', value='Necron Warrior')
 

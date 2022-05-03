@@ -23,7 +23,12 @@ st.markdown(
 )
 
 with st.sidebar:
-    attacker_txt = st.text_input('Attacker', value='Necron Warrior')
+    smart_flag = st.checkbox("I know what I'm doing", value=False)
+    if smart_flag:
+        attacker_txt = st.text_input('Attacker', value='')
+        st.caption('Are you sure?')
+    else:
+        attacker_txt = st.selectbox('Attacker', ['Necron Warrior', 'Intercessor'])
 
     if attacker_txt:
         id = find_model_id(attacker_txt)
@@ -41,7 +46,11 @@ with st.sidebar:
 
     n_units = int(st.text_input('Number of units', value=10))
 
-    defender_txt = st.text_input('Defender', value='Intercessor')
+    if smart_flag:
+        defender_txt = st.text_input('Defender', value='Intercessor')
+    else:
+        defender_txt = st.selectbox('Defender',
+                                    ['Necron Warrior', 'Intercessor'])
 
 
 if defender_txt and attacker_txt:
@@ -75,3 +84,4 @@ if defender_txt and attacker_txt:
         st.write(f'Successful hits: {max(h, key=h.get)}')
         st.write(f'Successful wounds: {max(w, key=w.get)}')
         st.write(f'Unsaved hits: {max(u, key=u.get)}')
+        st.write(f'Damage: {max(u, key=u.get) * int(attacker.weapon_D.values)}')

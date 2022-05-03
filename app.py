@@ -15,14 +15,20 @@ if attacker_txt:
     weapon = st.radio(
         "Select weapon",
         wg_list['name'].values)
-n_units = int(st.text_input('Number of units', value=10))
+
 attacker = Model(attacker_txt, weapon)
+rapid_fire_flag = False
+if 'Rapid Fire' in attacker.weapon_type:
+    rapid_fire_flag = st.checkbox('Rapid fire (x2 attack)', value=False)
+
+n_units = int(st.text_input('Number of units', value=10))
 
 defender_txt = st.text_input('Defender', value='Intercessor')
 if defender_txt and attacker_txt:
     defender = Model(defender_txt)
     calc = Shooting(attacker, defender)
-    h, w, u = calc.count_statistics_total(n_units=n_units)
+    h, w, u = calc.count_statistics_total(n_units=n_units,
+                                          rapid_fire_flag=rapid_fire_flag)
     fig = px.bar(pd.DataFrame(h, index=["hits"]).T, y='hits')
     st.plotly_chart(fig)
     fig = px.bar(pd.DataFrame(w, index=["wounds"]).T, y='wounds')

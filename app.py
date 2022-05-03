@@ -21,14 +21,15 @@ st.markdown(
     """,
     unsafe_allow_html=True,
 )
-
+units_list = ['Necron Warrior', 'Intercessor', 'Beast Snagga Boy',
+              'Death Guard Cultist', 'Termagant']
 with st.sidebar:
     smart_flag = st.checkbox("I know what I'm doing", value=False)
     if smart_flag:
         attacker_txt = st.text_input('Attacker', value='')
         st.caption('Are you sure?')
     else:
-        attacker_txt = st.selectbox('Attacker', ['Necron Warrior', 'Intercessor'])
+        attacker_txt = st.selectbox('Attacker', units_list, index=0)
 
     if attacker_txt:
         id = find_model_id(attacker_txt)
@@ -47,10 +48,9 @@ with st.sidebar:
     n_units = int(st.text_input('Number of units', value=10))
 
     if smart_flag:
-        defender_txt = st.text_input('Defender', value='Intercessor')
+        defender_txt = st.text_input('Defender', value='')
     else:
-        defender_txt = st.selectbox('Defender',
-                                    ['Necron Warrior', 'Intercessor'])
+        defender_txt = st.selectbox('Defender', units_list, index=2)
 
 
 if defender_txt and attacker_txt:

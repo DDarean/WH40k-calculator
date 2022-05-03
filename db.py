@@ -39,9 +39,3 @@ def get_wargear_list(cursor, model_id):
     names = list(map(lambda x: x[0], cursor.description))
     df_wargear = pd.DataFrame(wargear, columns=names)
     return df_wargear
-
-
-id = find_model_id('Necron Warrior')
-wg_list = get_wargear_list(id)
-
-print(wg_list)

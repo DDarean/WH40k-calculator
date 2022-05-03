@@ -38,4 +38,5 @@ def get_wargear_list(cursor, model_id):
     wargear = [x for lst in wargear for x in lst]
     names = list(map(lambda x: x[0], cursor.description))
     df_wargear = pd.DataFrame(wargear, columns=names)
+    df_wargear = df_wargear[(df_wargear['Range'] != 'Melee')]
     return df_wargear

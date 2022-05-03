@@ -22,7 +22,7 @@ st.markdown(
     unsafe_allow_html=True,
 )
 units_list = ['Necron Warrior', 'Intercessor', 'Beast Snagga Boy',
-              'Death Guard Cultist', 'Termagant']
+              'Death Guard Cultist', 'Rubric Marine']
 with st.sidebar:
     smart_flag = st.checkbox("I know what I'm doing", value=False)
     if smart_flag:

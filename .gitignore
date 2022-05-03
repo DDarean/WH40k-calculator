@@ -1,0 +1,9 @@
+*.csv
+*.xlsx
+*.ipynb
+wh40k-master
+__pycache__
+.idea
+.ipynb_checkpoints
+venv
+ignore/

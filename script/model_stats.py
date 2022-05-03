@@ -1,11 +1,13 @@
 import sqlite3
+from os import path
 
 import pandas as pd
 
 
 def connect_to_database(f):
     def wrap(*args):
-        with sqlite3.connect('test.db') as con:
+        filename = path.join(path.dirname(__file__), '../tests/test.db')
+        with sqlite3.connect(filename) as con:
             cur = con.cursor()
             connected = f(cur, *args)
             return connected

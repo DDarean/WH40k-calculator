@@ -1,0 +1,17 @@
+name: CI
+
+on: push
+
+jobs:
+  code_quality:
+    runs-on: ubuntu-latest
+    name: Run tests
+    container: python:3.9
+
+    steps:
+      - name: Tests
+        uses: actions/checkout@v2
+      - name: Run script
+        run: |
+          pip install pytest
+          py.test tests

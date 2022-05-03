@@ -5,7 +5,7 @@ from db import find_model_id, get_wargear_list
 from model_stats import Model
 import plotly.express as px
 import pandas as pd
-
+#st.set_page_config(layout='wide')
 with st.sidebar:
     attacker_txt = st.text_input('Attacker', value='Necron Warrior')
 
@@ -35,13 +35,33 @@ if defender_txt and attacker_txt:
     h, w, u = calc.count_statistics_total(n_units=n_units,
                                           rapid_fire_flag=rapid_fire_flag)
 
-    fig = px.bar(pd.DataFrame(h, index=["hits"]).T, y='hits')
-    st.plotly_chart(fig)
+    col1, col2 = st.columns(2)
 
-    fig = px.bar(pd.DataFrame(w, index=["wounds"]).T, y='wounds')
-    st.plotly_chart(fig)
+    with col1:
+        fig = px.bar(pd.DataFrame(h, index=["hits"]).T, y='hits')
+        fig.update_layout(title_text='Hits', title_x=0.5)
+        st.plotly_chart(fig)
 
-    fig = px.bar(pd.DataFrame(u, index=["unsaved"]).T, y='unsaved')
-    st.plotly_chart(fig)
+    with col2:
+        fig = px.bar(pd.DataFrame(w, index=["wounds"]).T, y='wounds')
+        fig.update_layout(title_text='Wounds', title_x=0.5)
+        st.plotly_chart(fig)
+
+    col3, col4 = st.columns(2)
+
+    with col3:
+        fig = px.bar(pd.DataFrame(u, index=["unsaved"]).T, y='unsaved')
+        fig.update_layout(title_text='Unsaved hits', title_x=0.5)
+        st.plotly_chart(fig)
+
+    with col4:
+        st.title('Expected values', anchor=None)
+        st.write(f'Successful hits: {max(h, key=h.get)}')
+        st.write(f'Successful wounds: {max(w, key=w.get)}')
+        st.write(f'Unsaved hits: {max(u, key=u.get)}')
+
+
+
+
 
 

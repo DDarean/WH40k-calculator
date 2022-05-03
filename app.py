@@ -80,8 +80,14 @@ if defender_txt and attacker_txt:
         st.plotly_chart(fig)
 
     with col4:
-        st.title('Expected values', anchor=None)
-        st.write(f'Successful hits: {max(h, key=h.get)}')
-        st.write(f'Successful wounds: {max(w, key=w.get)}')
-        st.write(f'Unsaved hits: {max(u, key=u.get)}')
-        st.write(f'Damage: {max(u, key=u.get) * int(attacker.weapon_D.values)}')
+            st.title('Expected values', anchor=None)
+            st.write(f'Successful hits: {max(h, key=h.get)}')
+            st.write(f'Successful wounds: {max(w, key=w.get)}')
+            st.write(f'Unsaved hits: {max(u, key=u.get)}')
+            st.write(f'Damage: {max(u, key=u.get) * int(attacker.weapon_D.values)}')
+
+    col5, col6 = st.columns(2)
+    with col5:
+        st.image(f'img/{attacker_txt}.PNG')
+    with col6:
+        st.image(f'img/{defender_txt}.PNG')

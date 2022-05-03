@@ -1,7 +1,7 @@
 from unittest.mock import patch
 
-from calculator import Shooting
-from model_stats import Model
+from script.calculator import Shooting
+from script.model_stats import Model
 
 
 @patch.object(Shooting, 'roll')

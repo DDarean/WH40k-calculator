@@ -6,6 +6,22 @@ from model_stats import Model
 import plotly.express as px
 import pandas as pd
 st.set_page_config(layout='wide')
+
+st.markdown(
+    """
+    <style>
+    [data-testid="stSidebar"][aria-expanded="true"] > div:first-child {
+        width: 600px;
+    }
+    [data-testid="stSidebar"][aria-expanded="false"] > div:first-child {
+        width: 600px;
+        margin-left: -500px;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True,
+)
+
 with st.sidebar:
     attacker_txt = st.text_input('Attacker', value='Necron Warrior')
 
@@ -59,9 +75,3 @@ if defender_txt and attacker_txt:
         st.write(f'Successful hits: {max(h, key=h.get)}')
         st.write(f'Successful wounds: {max(w, key=w.get)}')
         st.write(f'Unsaved hits: {max(u, key=u.get)}')
-
-
-
-
-
-
